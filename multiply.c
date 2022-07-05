@@ -1,55 +1,115 @@
-#include <stdio.h>
- 
-int main()
+. "Write a program to perform following operations on matrix: 
+a) Addition b) Subtraction c) Multiplication d) Transpose"
+
+#include<stdio.h>
+#include<stdlib.h>
+
+void add(int m[3][3], int n[3][3], int sum[3][3])
 {
-  int m, n, p, q, c, d, k, sum = 0;
-  int first[10][10], second[10][10], multiply[10][10];
- 
-  printf("Enter the number of rows and columns of first matrix\n");
-  scanf("%d%d", &m, &n);
-  printf("Enter the elements of first matrix\n");
- 
-  for (  c = 0 ; c < m ; c++ )
-    for ( d = 0 ; d < n ; d++ )
-      scanf("%d", &first[c][d]);
- 
-  printf("Enter the number of rows and columns of second matrix\n");
-  scanf("%d%d", &p, &q);
- 
-  if ( n != p )
-    printf("Matrices with entered orders can't be multiplied with each other.\n");
-  else
+  for(int i=0;i<3;i++)
+    for(int j=0;j<3;j++)
+      sum[i][j] = m[i][j] + n[i][j];
+}
+
+void subtract(int m[3][3], int n[3][3], int result[3][3])
+{
+  for(int i=0;i<3;i++)
+    for(int j=0;j<3;j++)
+      result[i][j] = m[i][j] - n[i][j];
+}
+
+void multiply(int m[3][3], int n[3][3], int result[3][3])
+{
+  for(int i=0; i < 3; i++)
   {
-    printf("Enter the elements of second matrix\n");
- 
-    for ( c = 0 ; c < p ; c++ )
-      for ( d = 0 ; d < q ; d++ )
-        scanf("%d", &second[c][d]);
- 
-    for ( c = 0 ; c < m ; c++ )
+    for(int j=0; j < 3; j++)
     {
-      for ( d = 0 ; d < q ; d++ )
-      {
-        for ( k = 0 ; k < p ; k++ )
-        {
-          sum = sum + first[c][k]*second[k][d];
-        }
- 
-        multiply[c][d] = sum;
-        sum = 0;
-      }
-    }
- 
-    printf("Product of entered matrices:-\n");
- 
-    for ( c = 0 ; c < m ; c++ )
-    {
-      for ( d = 0 ; d < q ; d++ )
-        printf("%d\t", multiply[c][d]);
- 
-      printf("\n");
+      result[i][j] = 0; // assign 0
+      for (int k = 0; k < 3; k++)
+      result[i][j] += m[i][k] * n[k][j];
     }
   }
- 
+}
+
+void transpose(int matrix[3][3], int trans[3][3])
+{
+  for (int i = 0; i < 3; i++)
+    for (int j = 0; j < 3; j++)
+      trans[i][j] = matrix[j][i];
+}
+
+void display(int matrix[3][3])
+{
+  for(int i=0; i<3; i++)
+  {
+    for(int j=0; j<3; j++)
+      printf("%d\t",matrix[i][j]);
+
+    printf("\n"); // new line
+  }
+}
+
+int main()
+{
+  int a[][3] = { {5,6,7}, {8,9,10}, {3,1,2} };
+  int b[][3] = { {1,2,3}, {4,5,6}, {7,8,9} };
+  int c[3][3];
+
+  printf("First Matrix:\n");
+  display(a);
+  printf("Second Matrix:\n");
+  display(b);
+
+  
+  int choice;
+
+  // menu-driven
+  do
+  {
+    
+    printf("\nChoose the matrix operation,\n");
+    printf("----------------------------\n");
+    printf("1. Addition\n");
+    printf("2. Subtraction\n");
+    printf("3. Multiplication\n");
+    printf("4. Transpose\n");
+    printf("5. Exit\n");
+    printf("----------------------------\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+
+    switch (choice) {
+      case 1:
+        add(a, b, c);
+        printf("Sum of matrix: \n");
+        display(c);
+        break;
+      case 2:
+        subtract(a, b, c);
+        printf("Subtraction of matrix: \n");
+        display(c);
+        break;
+      case 3:
+        multiply(a, b, c);
+        printf("Multiplication of matrix: \n");
+        display(c);
+        break;
+      case 4:
+        printf("Transpose of the first matrix: \n");
+        transpose(a, c);
+        display(c);
+        printf("Transpose of the second matrix: \n");
+        transpose(b, c);
+        display(c);
+        break;
+      case 5:
+        printf("Thank You.\n");
+        exit(0);
+      default:
+        printf("Invalid input.\n");
+        printf("Please enter the correct input.\n");
+    }
+  }while(1);
+
   return 0;
-} 
+}
